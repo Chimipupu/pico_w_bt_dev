@@ -33,6 +33,7 @@ static void bt_serial_main(void)
             SerialBT.write(c);
             i++;
         }
+        // SerialBT.write(&s_bt_rx_buf[0], strlen((const char *)s_bt_tx_buf));
         memset(&s_bt_rx_buf[0], 0, sizeof(s_bt_rx_buf));
         i = 0;
     }
@@ -49,6 +50,7 @@ void app_bt_init(void)
     memset(&s_bt_rx_buf[0], 0, sizeof(s_bt_rx_buf));
     SerialBT.setName("Pico2W_BT_Dev");
     SerialBT.begin();
+    digitalWrite(LED_BUILTIN, HIGH);
 }
 
 /**
@@ -57,5 +59,5 @@ void app_bt_init(void)
  */
 void app_bt_main(void)
 {
-
+    bt_serial_main();
 }

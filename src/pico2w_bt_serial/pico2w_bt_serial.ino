@@ -38,5 +38,5 @@ void cpu_core_1_main()
 {
     // Blutoothアプリ初期化
     app_bt_main();
-    SerialBT.printf("TEST CPU Core1. BT Serial\n");
+    // SerialBT.println("TEST CPU Core1. BT Serial\n");
 }
