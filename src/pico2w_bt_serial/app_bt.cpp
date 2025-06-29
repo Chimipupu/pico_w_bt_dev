@@ -10,13 +10,18 @@
  */
 #include "app_bt.hpp"
 
+static uint8_t s_bt_tx_buf[256] = {0};
+static uint8_t s_bt_rx_buf[256] = {0};
+
 /**
  * @brief Blutoothアプリ初期化
  * 
  */
 void app_bt_init(void)
 {
-    SerialBT.setName("PicoW2_BT_Dev");
+    memset(&s_bt_tx_buf[0], 0, sizeof(s_bt_tx_buf));
+    memset(&s_bt_rx_buf[0], 0, sizeof(s_bt_rx_buf));
+    SerialBT.setName("Pico2W_BT_Dev");
     SerialBT.begin();
 }
 
@@ -26,14 +31,20 @@ void app_bt_init(void)
  */
 void app_bt_main(void)
 {
+    uint8_t i = 0;
+
     while (SerialBT)
     {
         while (SerialBT.available())
         {
-            char c = SerialBT.read();
-            c = toupper(c);
-            Serial.printf("%c\n", c);
+            uint8_t c = SerialBT.read();
+            s_bt_rx_buf[i] = toupper(c);
             SerialBT.write(c);
+            i++;
         }
+        // SerialBT.printf("BT RX End\n");
+        Serial.printf("%s\n", s_bt_rx_buf);
+        memset(&s_bt_rx_buf[0], 0, sizeof(s_bt_rx_buf));
+        i = 0;
     }
 }
